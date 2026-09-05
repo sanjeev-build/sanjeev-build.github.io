@@ -3,11 +3,54 @@
 ============================= */
 body {
     margin: 0;
+    min-height: 100%;
+    background: #000;
+}
+
+body {
     font-family: Arial, sans-serif;
-    background: black;
     color: white;
     overflow-x: hidden;
+
+    /* SPACE BACKGROUND */
+    background:
+        radial-gradient(
+            1px 1px at 10% 20%,
+            rgba(255,255,255,0.9),
+            transparent
+        ),
+        radial-gradient(
+            1px 1px at 30% 70%,
+            rgba(255,255,255,0.7),
+            transparent
+        ),
+        radial-gradient(
+            1.5px 1.5px at 55% 35%,
+            rgba(255,255,255,0.8),
+            transparent
+        ),
+        radial-gradient(
+            1px 1px at 75% 80%,
+            rgba(255,255,255,0.8),
+            transparent
+        ),
+        radial-gradient(
+            1.5px 1.5px at 90% 15%,
+            rgba(255,255,255,0.9),
+            transparent
+        ),
+        #000;
+
+    background-size:
+        250px 250px,
+        320px 320px,
+        200px 200px,
+        280px 280px,
+        350px 350px,
+        auto;
 }
+
+
 
 /* =============================
    HOME BUTTON
