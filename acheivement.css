@@ -30,6 +30,190 @@ body {
 .home-btn:hover {
     background: #333;
 }
+/* =============================
+   SPACE INTRO POPUP
+============================= */
+
+.drag-guide {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(7px);
+
+    z-index: 10000;
+
+    opacity: 1;
+    visibility: visible;
+
+    transition: 0.35s ease;
+}
+
+.drag-guide.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+
+/* =============================
+   POPUP BOX
+============================= */
+
+.drag-guide-box {
+    width: min(420px, calc(100% - 40px));
+
+    padding: 35px 30px;
+
+    text-align: center;
+
+    background: rgba(8, 12, 25, 0.96);
+
+    border: 1px solid rgba(0, 198, 255, 0.35);
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 0 30px rgba(0, 198, 255, 0.2),
+        0 0 80px rgba(0, 100, 255, 0.12);
+
+    animation: spacePopup 0.5s ease;
+}
+
+
+/* =============================
+   HEADING
+============================= */
+
+.drag-guide-box h2 {
+    margin: 0 0 14px;
+
+    color: #ffffff;
+
+    font-size: 25px;
+    font-weight: 600;
+
+    text-shadow:
+        0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+
+/* =============================
+   DESCRIPTION
+============================= */
+
+.drag-guide-box p {
+    margin: 0 0 24px;
+
+    color: #9daaba;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+/* =============================
+   HIGHLIGHTED DRAG TEXT
+============================= */
+
+.drag-highlight {
+    display: inline-block;
+
+    margin-bottom: 28px;
+
+    padding: 12px 20px;
+
+    color: #00eaff;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    background: rgba(0, 198, 255, 0.08);
+
+    border: 1px solid rgba(0, 198, 255, 0.35);
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 0 15px rgba(0, 198, 255, 0.15);
+
+    animation: highlightGlow 2s ease-in-out infinite;
+}
+
+
+/* =============================
+   BUTTON
+============================= */
+
+#closeDragGuide {
+    display: block;
+
+    width: 100%;
+
+    padding: 12px 20px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: linear-gradient(
+        90deg,
+        #0099ff,
+        #00d9ff
+    );
+
+    color: #001018;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+#closeDragGuide:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 0 20px rgba(0, 220, 255, 0.6);
+}
+
+
+/* =============================
+   ANIMATIONS
+============================= */
+
+@keyframes spacePopup {
+
+    from {
+        opacity: 0;
+        transform: scale(0.85);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes highlightGlow {
+
+    0%,
+    100% {
+        box-shadow:
+            0 0 10px rgba(0, 198, 255, 0.15);
+    }
+
+    50% {
+        box-shadow:
+            0 0 25px rgba(0, 198, 255, 0.4);
+    }
+}
 
 /* =============================
    WRAPPER
@@ -100,18 +284,35 @@ body {
 /* =============================
    SKILL BALLS
 ============================= */
+
 .skill-ball {
     position: absolute;
     border-radius: 50%;
     background: #0b0b0b;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+
+    /* Important for mobile dragging */
+    touch-action: none;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        filter 0.25s ease;
+
+    z-index: 5;
 }
 
-/* sizes */
+/* =============================
+   PLANET SIZES
+============================= */
+
 .skill-ball.big {
     width: 72px;
     height: 72px;
@@ -122,33 +323,191 @@ body {
     height: 52px;
 }
 
-/* SUN */
+/* =============================
+   SUN
+============================= */
+
 .skill-ball.sun {
     width: 130px;
     height: 130px;
-    background: radial-gradient(circle, #ffd84d, #ff9800);
-    box-shadow: 0 0 60px rgba(255,165,0,0.8);
-}
 
-/* hover glow */
-.skill-ball:hover {
-    transform: scale(1.15);
-    box-shadow: 0 0 20px #00c6ff;
+    background:
+        radial-gradient(
+            circle at 35% 35%,
+            #fff6a0,
+            #ffd84d 35%,
+            #ff9800 70%,
+            #ff6500
+        );
+
+    box-shadow:
+        0 0 30px rgba(255, 180, 0, 0.8),
+        0 0 60px rgba(255, 140, 0, 0.5);
+
+    cursor: default;
+    z-index: 10;
 }
 
 /* =============================
-   LOGO IMAGES
+   PLANET GLOW
 ============================= */
+
+.skill-ball.big,
+.skill-ball.small {
+    box-shadow:
+        0 0 10px rgba(0, 198, 255, 0.25),
+        inset 0 0 12px rgba(255, 255, 255, 0.05);
+}
+
+/* =============================
+   HOVER
+============================= */
+
+.skill-ball.big:hover,
+.skill-ball.small:hover {
+    transform: scale(1.15);
+
+    box-shadow:
+        0 0 15px #00c6ff,
+        0 0 35px rgba(0, 198, 255, 0.6),
+        inset 0 0 15px rgba(255, 255, 255, 0.1);
+
+    filter: brightness(1.2);
+
+    z-index: 100;
+}
+
+/* =============================
+   DRAGGING PLANET
+============================= */
+
+.skill-ball.dragging {
+    cursor: grabbing;
+
+    transform: scale(1.2);
+
+    box-shadow:
+        0 0 20px #00eaff,
+        0 0 45px rgba(0, 234, 255, 0.8),
+        0 0 80px rgba(0, 198, 255, 0.4);
+
+    filter: brightness(1.3);
+
+    z-index: 1000;
+}
+
+/* =============================
+   PLANET IMAGE
+============================= */
+
 .skill-ball img {
     width: 60%;
     height: 60%;
+
     object-fit: contain;
+
     pointer-events: none;
+    user-select: none;
+
+    -webkit-user-drag: none;
+
+    transition:
+        transform 0.25s ease,
+        filter 0.25s ease;
 }
+
+.skill-ball:hover img {
+    filter: drop-shadow(0 0 5px #ffffff);
+}
+
+/* =============================
+   DRAGGING IMAGE
+============================= */
+
+.skill-ball.dragging img {
+    filter:
+        drop-shadow(0 0 8px #00eaff)
+        drop-shadow(0 0 15px #00c6ff);
+}
+
+/* =============================
+   SUN IMAGE
+============================= */
 
 .skill-ball.sun img {
     width: 70%;
     height: 70%;
+}
+
+/* =============================
+   ORBIT
+============================= */
+
+.skills-orbit {
+    position: relative;
+
+    width: 600px;
+    height: 600px;
+
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+
+
+/* =============================
+   MOBILE
+============================= */
+
+@media (max-width: 900px) {
+
+    .skills-orbit {
+        width: 420px;
+        height: 420px;
+    }
+
+    .skills-orbit::before {
+        width: 250px;
+        height: 250px;
+    }
+
+    .skills-orbit::after {
+        width: 350px;
+        height: 350px;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .skills-orbit {
+        width: 320px;
+        height: 320px;
+    }
+
+    .skills-orbit::before {
+        width: 190px;
+        height: 190px;
+    }
+
+    .skills-orbit::after {
+        width: 270px;
+        height: 270px;
+    }
+
+    .skill-ball.sun {
+        width: 90px;
+        height: 90px;
+    }
+
+    .skill-ball.big {
+        width: 56px;
+        height: 56px;
+    }
+
+    .skill-ball.small {
+        width: 42px;
+        height: 42px;
+    }
 }
 
 /* =============================

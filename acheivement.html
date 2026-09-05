@@ -7,6 +7,24 @@
 <link rel="stylesheet" href="acheivement.css">
 </head>
 <body>
+ <div id="dragGuide" class="drag-guide">
+    <div class="drag-guide-box">
+        <h2>Are you ready to explore space? 🚀</h2>
+
+        <p>
+            Discover your skills across the galaxy.
+        </p>
+
+        <div class="drag-highlight">
+            ✦ You can drag the planets ✦
+        </div>
+
+        <button id="closeDragGuide">
+            Start Exploring
+        </button>
+    </div>
+</div>
+
 <div class="skills-wrapper">
     <button class="home-btn" onclick="window.location.href='/'">⬅ Home</button>
     <div class="stars stars-back"></div>
@@ -32,6 +50,14 @@
                 <div class="skill-ball small" data-name="NGINX" data-percent="90">
                     <img src="image/profile/NGINX.png" alt="NGINX">
                 </div>
+
+                <div class="skill-ball small" data-name="AI" data-percent="85">
+                    <img src="image/profile/ai.png" alt="AI">
+                </div>
+
+                <div class="skill-ball small" data-name="OCR" data-percent="85">
+                    <img src="image/profile/ocr.png" alt="OCR">
+                </div>
             </div>
             <div id="skillsList" class="skills-list"></div>
         </div>
@@ -42,90 +68,532 @@
 <script>
 const orbit = document.getElementById("orbit");
 const sun = document.getElementById("sun");
-const planets = [...document.querySelectorAll(".skill-ball:not(.sun)")];
-const skills = [...document.querySelectorAll(".skill-ball")];
+
+const planets = [
+    ...document.querySelectorAll(".skill-ball:not(.sun)")
+];
+
+const skills = [
+    ...document.querySelectorAll(".skill-ball")
+];
+
 const tooltip = document.getElementById("skillTooltip");
 const listContainer = document.getElementById("skillsList");
+
+
+// =====================================
+// SUN POSITION
+// =====================================
 
 sun.style.left = "50%";
 sun.style.top = "50%";
 sun.style.transform = "translate(-50%, -50%)";
 
+
+// =====================================
+// ORBIT SETTINGS
+// =====================================
+
 const BASE_RADIUS = 150;
-const GAP = 60;
-const SPEEDS = [0.001, 0.0008, 0.0006, 0.0005];
-const RING_COUNT = 3;
+const GAP = 50;
 
-const layers = Array.from({ length: RING_COUNT }, () => []);
+const SPEEDS = [
+    0.001,
+    0.0008,
+    0.0006,
+    0.0005,
+    0.0010,
+    0.0007
+];
 
-planets.forEach((p, i) => layers[i % RING_COUNT].push(p));
+const RING_COUNT = 5;
+
+const layers = Array.from(
+    { length: RING_COUNT },
+    () => []
+);
+
+
+// =====================================
+// CREATE ORBIT LAYERS
+// =====================================
+
+planets.forEach((planet, index) => {
+
+    layers[index % RING_COUNT].push(planet);
+
+});
+
 
 layers.forEach((layer, ringIndex) => {
-    const radius = BASE_RADIUS + ringIndex * GAP;
-    const step = (Math.PI * 2) / layer.length;
-    const offset = Math.random() * Math.PI * 2;
 
-    layer.forEach((p, i) => {
-        p.angle = offset + i * step;
-        p.radius = radius;
-        p.speed = SPEEDS[ringIndex];
-        p.isDragging = false;
-        p.currentX = null;
-        p.currentY = null;
+    const radius =
+        BASE_RADIUS + ringIndex * GAP;
+
+    const step =
+        (Math.PI * 2) / layer.length;
+
+    const offset =
+        Math.random() * Math.PI * 2;
+
+
+    layer.forEach((planet, index) => {
+
+        planet.angle =
+            offset + index * step;
+
+        planet.radius =
+            radius;
+
+        planet.speed =
+            SPEEDS[ringIndex];
+
+        planet.isDragging =
+            false;
+
+        planet.currentX =
+            null;
+
+        planet.currentY =
+            null;
+
     });
+
 });
 
-function lerp(a, b, t) { return a + (b - a) * t; }
+
+// =====================================
+// SMOOTH MOVEMENT
+// =====================================
+
+function lerp(a, b, t) {
+
+    return a + (b - a) * t;
+
+}
+
+
+// =====================================
+// ANIMATION
+// =====================================
 
 function animate() {
+
     layers.forEach(layer => {
-        layer.forEach(p => {
-            if (!p.isDragging) p.angle += p.speed;
 
-            const targetX = Math.cos(p.angle) * p.radius;
-            const targetY = Math.sin(p.angle) * p.radius;
+        layer.forEach(planet => {
 
-            if (p.currentX === null) p.currentX = targetX;
-            if (p.currentY === null) p.currentY = targetY;
+            /*
+             * Don't automatically move
+             * while user is dragging.
+             */
+            if (!planet.isDragging) {
 
-            if (!p.isDragging) {
-                p.currentX = lerp(p.currentX, targetX, 0.08);
-                p.currentY = lerp(p.currentY, targetY, 0.08);
+                planet.angle += planet.speed;
 
-                p.style.left = "50%";
-                p.style.top = "50%";
-                p.style.transform =
-                    `translate(-50%, -50%) translate(${p.currentX}px, ${p.currentY}px)`;
             }
+
+
+            const targetX =
+                Math.cos(planet.angle) *
+                planet.radius;
+
+            const targetY =
+                Math.sin(planet.angle) *
+                planet.radius;
+
+
+            if (planet.currentX === null) {
+
+                planet.currentX =
+                    targetX;
+
+            }
+
+
+            if (planet.currentY === null) {
+
+                planet.currentY =
+                    targetY;
+
+            }
+
+
+            if (!planet.isDragging) {
+
+                planet.currentX =
+                    lerp(
+                        planet.currentX,
+                        targetX,
+                        0.08
+                    );
+
+                planet.currentY =
+                    lerp(
+                        planet.currentY,
+                        targetY,
+                        0.08
+                    );
+
+
+                planet.style.left =
+                    "50%";
+
+                planet.style.top =
+                    "50%";
+
+
+                planet.style.transform =
+                    `translate(-50%, -50%)
+                     translate(
+                        ${planet.currentX}px,
+                        ${planet.currentY}px
+                     )`;
+
+            }
+
         });
+
     });
+
+
     requestAnimationFrame(animate);
+
 }
+
+
 animate();
 
-skills.forEach(skill => {
-    const item = document.createElement("div");
-    item.className = "skill-item";
-    item.innerHTML = `
-        <h4>${skill.dataset.name}</h4>
-        <div class="skill-bar">
-            <div class="skill-bar-fill" style="width:${skill.dataset.percent}%"></div>
-        </div>
-    `;
-    listContainer.appendChild(item);
-});
+
+// =====================================
+// SKILL LIST
+// =====================================
 
 skills.forEach(skill => {
-    skill.addEventListener("mouseenter", () => {
-        tooltip.innerHTML = `<strong>${skill.dataset.name}</strong><br>${skill.dataset.percent}%`;
-        tooltip.style.opacity = 1;
-    });
-    skill.addEventListener("mousemove", e => {
-        tooltip.style.left = e.clientX + 15 + "px";
-        tooltip.style.top = e.clientY + 15 + "px";
-    });
-    skill.addEventListener("mouseleave", () => tooltip.style.opacity = 0);
+
+    const item =
+        document.createElement("div");
+
+    item.className =
+        "skill-item";
+
+
+    item.innerHTML = `
+        <h4>${skill.dataset.name}</h4>
+
+        <div class="skill-bar">
+
+            <div
+                class="skill-bar-fill"
+                style="width:${skill.dataset.percent}%">
+            </div>
+
+        </div>
+    `;
+
+
+    listContainer.appendChild(item);
+
 });
+
+
+// =====================================
+// TOOLTIP
+// =====================================
+
+skills.forEach(skill => {
+
+    skill.addEventListener(
+        "mouseenter",
+        () => {
+
+            tooltip.innerHTML =
+                `<strong>
+                    ${skill.dataset.name}
+                </strong>
+                <br>
+                ${skill.dataset.percent}%`;
+
+            tooltip.style.opacity =
+                1;
+
+        }
+    );
+
+
+    skill.addEventListener(
+        "mousemove",
+        event => {
+
+            tooltip.style.left =
+                event.clientX + 15 + "px";
+
+            tooltip.style.top =
+                event.clientY + 15 + "px";
+
+        }
+    );
+
+
+    skill.addEventListener(
+        "mouseleave",
+        () => {
+
+            tooltip.style.opacity =
+                0;
+
+        }
+    );
+
+});
+
+
+// =====================================
+// DRAGGING
+// =====================================
+
+let draggedPlanet = null;
+
+let dragStartX = 0;
+let dragStartY = 0;
+
+let originalX = 0;
+let originalY = 0;
+
+
+// -------------------------------------
+// START DRAG
+// -------------------------------------
+
+planets.forEach(planet => {
+
+    planet.addEventListener(
+        "pointerdown",
+        event => {
+
+            event.preventDefault();
+
+            draggedPlanet =
+                planet;
+
+            planet.isDragging =
+                true;
+
+            planet.classList.add(
+                "dragging"
+            );
+
+
+            dragStartX =
+                event.clientX;
+
+            dragStartY =
+                event.clientY;
+
+
+            originalX =
+                planet.currentX;
+
+            originalY =
+                planet.currentY;
+
+
+            planet.setPointerCapture(
+                event.pointerId
+            );
+
+        }
+    );
+
+
+    // ---------------------------------
+    // DRAG
+    // ---------------------------------
+
+    planet.addEventListener(
+        "pointermove",
+        event => {
+
+            if (
+                !draggedPlanet ||
+                draggedPlanet !== planet
+            ) {
+                return;
+            }
+
+
+            const deltaX =
+                event.clientX -
+                dragStartX;
+
+            const deltaY =
+                event.clientY -
+                dragStartY;
+
+
+            planet.currentX =
+                originalX + deltaX;
+
+            planet.currentY =
+                originalY + deltaY;
+
+
+            planet.style.left =
+                "50%";
+
+            planet.style.top =
+                "50%";
+
+
+            planet.style.transform =
+                `translate(-50%, -50%)
+                 translate(
+                    ${planet.currentX}px,
+                    ${planet.currentY}px
+                 )`;
+
+        }
+    );
+
+
+    // ---------------------------------
+    // END DRAG
+    // ---------------------------------
+
+    planet.addEventListener(
+        "pointerup",
+        event => {
+
+            finishDrag(
+                planet,
+                event
+            );
+
+        }
+    );
+
+
+    planet.addEventListener(
+        "pointercancel",
+        event => {
+
+            finishDrag(
+                planet,
+                event
+            );
+
+        }
+    );
+
+});
+
+
+// =====================================
+// FINISH DRAG
+// =====================================
+
+function finishDrag(
+    planet,
+    event
+) {
+
+    if (!planet.isDragging) {
+        return;
+    }
+
+
+    planet.isDragging =
+        false;
+
+    draggedPlanet =
+        null;
+
+    planet.classList.remove(
+        "dragging"
+    );
+
+
+    /*
+     * Convert the manually dragged
+     * position back into an orbit angle.
+     *
+     * This allows automatic rotation
+     * to continue from the new position.
+     */
+
+    planet.angle =
+        Math.atan2(
+            planet.currentY,
+            planet.currentX
+        );
+
+
+    /*
+     * Keep the planet at its
+     * original orbit radius.
+     */
+
+    const distance =
+        Math.sqrt(
+            planet.currentX *
+            planet.currentX +
+
+            planet.currentY *
+            planet.currentY
+        );
+
+
+    if (distance > 0) {
+
+        planet.currentX =
+            Math.cos(planet.angle) *
+            planet.radius;
+
+        planet.currentY =
+            Math.sin(planet.angle) *
+            planet.radius;
+
+    }
+
+
+    try {
+
+        planet.releasePointerCapture(
+            event.pointerId
+        );
+
+    } catch (error) {
+
+        // Ignore pointer capture errors
+
+    }
+
+}
+
+
+// =====================================
+// PREVENT MOBILE PAGE SCROLL
+// =====================================
+
+planets.forEach(planet => {
+
+    planet.style.touchAction =
+        "none";
+
+});
+const dragGuide = document.getElementById("dragGuide");
+const closeDragGuide = document.getElementById("closeDragGuide");
+
+closeDragGuide.addEventListener("click", () => {
+
+    // Hide popup
+    dragGuide.classList.add("hidden");
+
+    // Remember that user has seen it
+    localStorage.setItem("dragGuideSeen", "true");
+
+});
+
 </script>
 
 </body>
