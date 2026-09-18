@@ -76,6 +76,9 @@ body {
 /* =============================
    SPACE INTRO POPUP
 ============================= */
+/* =============================
+   PROFESSIONAL SPACE INTRO
+============================= */
 
 .drag-guide {
     position: fixed;
@@ -85,15 +88,22 @@ body {
     align-items: center;
     justify-content: center;
 
-    background: rgba(0, 0, 0, 0.72);
-    backdrop-filter: blur(7px);
+    padding: 20px;
+
+    background: rgba(2, 5, 12, 0.68);
+
+    /* subtle glass backdrop */
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
 
     z-index: 10000;
 
     opacity: 1;
     visibility: visible;
 
-    transition: 0.35s ease;
+    transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease;
 }
 
 .drag-guide.hidden {
@@ -104,44 +114,122 @@ body {
 
 
 /* =============================
-   POPUP BOX
+   GLASS CARD
 ============================= */
 
 .drag-guide-box {
-    width: min(420px, calc(100% - 40px));
+    position: relative;
 
-    padding: 35px 30px;
+    width: min(430px, 100%);
+    padding: 38px 36px 30px;
 
-    text-align: center;
+    box-sizing: border-box;
 
-    background: rgba(8, 12, 25, 0.96);
+    text-align: left;
 
-    border: 1px solid rgba(0, 198, 255, 0.35);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(22, 28, 42, 0.92),
+            rgba(8, 12, 22, 0.94)
+        );
 
-    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+
+    border-radius: 18px;
 
     box-shadow:
-        0 0 30px rgba(0, 198, 255, 0.2),
-        0 0 80px rgba(0, 100, 255, 0.12);
+        0 25px 80px rgba(0, 0, 0, 0.55),
+        0 0 0 1px rgba(255, 255, 255, 0.025);
 
-    animation: spacePopup 0.5s ease;
+    overflow: hidden;
+
+    animation: guideAppear 0.4s cubic-bezier(.22, 1, .36, 1);
+}
+
+
+/* subtle top highlight */
+
+.drag-guide-box::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 12%;
+    right: 12%;
+
+    height: 1px;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,0.28),
+        transparent
+    );
 }
 
 
 /* =============================
-   HEADING
+   ICON
+============================= */
+
+.guide-icon {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 22px;
+
+    border-radius: 10px;
+
+    color: #dcefff;
+
+    font-size: 17px;
+
+    background: rgba(0, 198, 255, 0.08);
+
+    border: 1px solid rgba(0, 198, 255, 0.18);
+
+    box-shadow:
+        inset 0 0 15px rgba(0, 198, 255, 0.04);
+}
+
+
+/* =============================
+   EYEBROW
+============================= */
+
+.guide-eyebrow {
+    margin-bottom: 9px;
+
+    color: #6f8299;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    letter-spacing: 2px;
+}
+
+
+/* =============================
+   TITLE
 ============================= */
 
 .drag-guide-box h2 {
-    margin: 0 0 14px;
+    margin: 0 0 12px;
 
-    color: #ffffff;
+    color: #f4f8fc;
 
     font-size: 25px;
+    line-height: 1.25;
+
     font-weight: 600;
 
-    text-shadow:
-        0 0 10px rgba(255, 255, 255, 0.2);
+    letter-spacing: -0.4px;
 }
 
 
@@ -150,42 +238,61 @@ body {
 ============================= */
 
 .drag-guide-box p {
-    margin: 0 0 24px;
+    margin: 0;
 
-    color: #9daaba;
+    max-width: 360px;
+
+    color: #8997a8;
 
     font-size: 14px;
-
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
 
 /* =============================
-   HIGHLIGHTED DRAG TEXT
+   DRAG HINT
 ============================= */
 
-.drag-highlight {
-    display: inline-block;
+.drag-hint {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 
-    margin-bottom: 28px;
+    margin: 25px 0;
 
-    padding: 12px 20px;
+    padding: 13px 14px;
 
-    color: #00eaff;
+    color: #b8c7d6;
 
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 13px;
+
+    background: rgba(255, 255, 255, 0.035);
+
+    border: 1px solid rgba(255, 255, 255, 0.07);
+
+    border-radius: 10px;
+}
+
+
+/* small interaction icon */
+
+.drag-icon {
+    width: 27px;
+    height: 27px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    color: #70d8f5;
+
+    font-size: 15px;
 
     background: rgba(0, 198, 255, 0.08);
 
-    border: 1px solid rgba(0, 198, 255, 0.35);
-
-    border-radius: 10px;
-
-    box-shadow:
-        0 0 15px rgba(0, 198, 255, 0.15);
-
-    animation: highlightGlow 2s ease-in-out infinite;
+    border-radius: 7px;
 }
 
 
@@ -194,68 +301,117 @@ body {
 ============================= */
 
 #closeDragGuide {
-    display: block;
-
     width: 100%;
 
-    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 
-    border: none;
-    border-radius: 10px;
+    padding: 12px 18px;
 
-    background: linear-gradient(
-        90deg,
-        #0099ff,
-        #00d9ff
-    );
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 9px;
 
-    color: #001018;
+    background: #e8f1f7;
 
-    font-size: 14px;
-    font-weight: bold;
+    color: #071018;
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 600;
 
     cursor: pointer;
 
-    transition: 0.25s ease;
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+#closeDragGuide span {
+    font-size: 16px;
+
+    transition: transform 0.2s ease;
 }
 
 #closeDragGuide:hover {
-    transform: translateY(-2px);
+    background: #ffffff;
+
+    transform: translateY(-1px);
 
     box-shadow:
-        0 0 20px rgba(0, 220, 255, 0.6);
+        0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+#closeDragGuide:hover span {
+    transform: translateX(3px);
+}
+
+#closeDragGuide:active {
+    transform: translateY(0);
 }
 
 
 /* =============================
-   ANIMATIONS
+   FOOTER
 ============================= */
 
-@keyframes spacePopup {
+.guide-footer {
+    margin-top: 18px;
+
+    color: #596777;
+
+    font-size: 11px;
+
+    text-align: center;
+}
+
+
+/* =============================
+   ANIMATION
+============================= */
+
+@keyframes guideAppear {
 
     from {
         opacity: 0;
-        transform: scale(0.85);
+        transform: translateY(10px) scale(0.98);
     }
 
     to {
         opacity: 1;
-        transform: scale(1);
+        transform: translateY(0) scale(1);
     }
+
 }
 
-@keyframes highlightGlow {
 
-    0%,
-    100% {
-        box-shadow:
-            0 0 10px rgba(0, 198, 255, 0.15);
+/* =============================
+   MOBILE
+============================= */
+
+@media (max-width: 500px) {
+
+    .drag-guide-box {
+        padding: 30px 24px 24px;
+
+        border-radius: 16px;
     }
 
-    50% {
-        box-shadow:
-            0 0 25px rgba(0, 198, 255, 0.4);
+    .drag-guide-box h2 {
+        font-size: 22px;
     }
+
+    .drag-guide-box p {
+        font-size: 13px;
+    }
+
+    .guide-icon {
+        margin-bottom: 18px;
+    }
+
 }
 
 /* =============================

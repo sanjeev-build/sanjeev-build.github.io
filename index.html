@@ -430,6 +430,16 @@
   </div>
 
 </section>
+<!-- Certificate Preview Modal -->
+<div id="certificateModal" class="certificate-modal" aria-hidden="true">
+    <button class="certificate-close" id="certificateClose" aria-label="Close certificate">
+        ✕
+    </button>
+
+    <div class="certificate-modal-content">
+        <img id="certificatePreview" src="" alt="Certificate Preview">
+    </div>
+</div>
 
 <section id="certificates" class="certificates-section">
   <h2 class="section-title">Certificates & Courses</h2>
@@ -437,42 +447,42 @@
 
   <div class="certificates-grid">
     <div class="certificate-card">
-      <img src="image/profile/aws_certificate_academy.jpg" alt="AWS Certified Solutions Architect">
+      <img src="image/profile/aws_certificate_academy.jpg" alt="AWS Certified Solutions Architect"class="certificate-img">
       <h3>AWS Certificate</h3>
       <p>AWS certification to cloud foundation.</p>
     </div>
     <div class="certificate-card">
-      <img src="image/profile/aws compute.jpg" alt="AWS Compute Service">
+      <img src="image/profile/aws compute.jpg" alt="AWS Compute Service"class="certificate-img">
       <h3>AWS Certificate</h3>
-      <p>AWS Compute Service.</p>
+      <p>AWS Compute Service and basics.</p>
     </div>
     <div class="certificate-card">
-      <img src="image/profile/azure_ai.jpeg" alt="Eduonix Certificate">
+      <img src="image/profile/azure_ai.jpeg" alt="Eduonix Certificate"class="certificate-img">
       <h3>Microsoft Azure Certificate</h3>
       <p>Exploring Microsoft Azure responsible AI.</p>
     </div>
     <div class="certificate-card">
-      <img src="image/profile/azure_cloud.jpeg" alt="Eduonix Certificate">
+      <img src="image/profile/azure_cloud.jpeg" alt="Eduonix Certificate"class="certificate-img">
       <h3>Microsoft Azure Certificate</h3>
       <p>Exploring Microsoft Azure Cloud Computing and Service.</p>
     </div>
     <div class="certificate-card">
-      <img src="image/profile/python_certificate_program.png" alt="Kaggle Certificate">
+      <img src="image/profile/python_certificate_program.png" alt="Kaggle Certificate"class="certificate-img">
       <h3>Kaggle Certificate</h3>
       <p>Kaggle certificate for basic python.</p>
     </div>
     <div class="certificate-card">
-      <img src="image/profile/python_certificate.png" alt="Kaggle Certificate">
+      <img src="image/profile/python_certificate.png" alt="Kaggle Certificate"class="certificate-img">
       <h3>Kaggle Certificate</h3>
       <p>Kaggle certificate for advance python.</p>
     </div>
     <div class="certificate-card">
-      <img src="image/profile/pandas_certificate.png" alt="Kaggle Certificate">
+      <img src="image/profile/pandas_certificate.png" alt="Kaggle Certificate"class="certificate-img">
       <h3>Kaggle Certificate</h3>
       <p>Kaggle certificate for pandas.</p>
     </div>
     <div class="certificate-card">
-      <img src="image/profile/eduonix_certificate.jpg" alt="Eduonix Certificate">
+      <img src="image/profile/eduonix_certificate.jpg" alt="Eduonix Certificate"class="certificate-img">
       <h3>Eduonix Certificate</h3>
       <p>Eduonix certificate for PHP and MySQL.</p>
     </div>
@@ -795,6 +805,71 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.2 });
 
 observer.observe(section);
+// =================================
+// CERTIFICATE IMAGE PREVIEW
+// =================================
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const modal = document.getElementById("certificateModal");
+    const preview = document.getElementById("certificatePreview");
+    const closeBtn = document.getElementById("certificateClose");
+
+    const certificateImages =
+        document.querySelectorAll(".certificate-img");
+
+    // Open certificate
+    certificateImages.forEach(img => {
+
+        img.addEventListener("click", () => {
+
+            preview.src = img.src;
+            preview.alt = img.alt;
+
+            modal.classList.add("active");
+            modal.setAttribute("aria-hidden", "false");
+
+            // Prevent background scrolling
+            document.body.style.overflow = "hidden";
+        });
+
+    });
+
+    // Close certificate
+    function closeCertificate() {
+
+        modal.classList.remove("active");
+        modal.setAttribute("aria-hidden", "true");
+
+        preview.src = "";
+
+        // Enable background scrolling
+        document.body.style.overflow = "";
+    }
+
+    closeBtn.addEventListener("click", closeCertificate);
+
+    // Close when clicking outside image
+    modal.addEventListener("click", (event) => {
+
+        if (event.target === modal) {
+            closeCertificate();
+        }
+
+    });
+
+    // Close using Escape key
+    document.addEventListener("keydown", (event) => {
+
+        if (event.key === "Escape" &&
+            modal.classList.contains("active")) {
+
+            closeCertificate();
+        }
+
+    });
+
+});
 
 </script>
 </body>
