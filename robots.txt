@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /404.html
+Disallow: /project_under_going.html
+Disallow: /uderconstruction.html
+
+Sitemap: https://sanjeevstack.in/sitemap.xml
